@@ -16,7 +16,6 @@ module.exports = function (app, bookService) {
     })
 
     .post(async function (req, res) {
-      let title = req.body.title;
       //response will contain new book object including atleast _id and title
       return res.json(await bookService.createBook(req.body));
     })
@@ -33,9 +32,7 @@ module.exports = function (app, bookService) {
     })
 
     .post(async function (req, res) {
-      let bookid = req.params.id;
-      let comment = req.body.comment;
-      //json res format same as .get
+      return res.json(await bookService.addComment(req.body));
     })
 
     .delete(async function (req, res) {

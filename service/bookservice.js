@@ -10,6 +10,8 @@ function BookService(repository) {
     return "cannot create book";
   };
 
+  this.addComment = function (payload) {};
+
   this.updateBook = async function () {};
 
   this.getBooks = async function (bookId) {

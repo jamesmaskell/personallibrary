@@ -116,7 +116,20 @@ suite("Functional Tests", function () {
 
     suite("POST /api/books/[id] => add comment/expect book object with id", function () {
       test("Test POST /api/books/[id] with comment", function (done) {
-        //done();
+        chai
+          .request(server)
+          .post("/api/books/60126d02de5eaeadef120998")
+          .type("form")
+          .send({ id: "60126d02de5eaeadef120998", comment: "very good" })
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.body.title, "the glass hotel");
+            assert.equal(res.body.commentcount, 1);
+            assert.equal(res.body._id.toString(), "60126d02de5eaeadef120998");
+            assert.deepEqual(res.body.comments[0], "very good");
+            assert.equal(res.body.__v, 1);
+            done();
+          });
       });
 
       test("Test POST /api/books/[id] without comment field", function (done) {

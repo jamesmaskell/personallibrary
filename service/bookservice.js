@@ -10,10 +10,13 @@ function BookService(repository) {
 		return "cannot create book";
 	};
 
-	this.addComment = async function (payload) {
+	this.addComment = async function (bookId, payload) {
 		if (!payload.hasOwnProperty("comment") || payload.comment == undefined || payload.comment == null || payload.comment == "") {
 			return "missing required field comment";
 		}
+
+		if (payload.id == undefined) payload.id = bookId;
+
 		let db_response = await repository.addComment(payload);
 
 		if (db_response == undefined) return "no book exists";

@@ -32,7 +32,8 @@ module.exports = function (app, bookService) {
 		})
 
 		.post(async function (req, res) {
-			return res.json(await bookService.addComment(req.body));
+			let bookId = req.params.id;
+			return res.json(await bookService.addComment(bookId, req.body));
 		})
 
 		.delete(async function (req, res) {

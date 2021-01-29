@@ -44,11 +44,13 @@ function BookRepository() {
 		try {
 			payload._id = ObjectId(mongoObjectId());
 
-			decoratedPayload = { ...payload };
+			let decoratedPayload = { ...payload };
 			decoratedPayload.comments = [];
 			decoratedPayload.commentcount = 0;
 			decoratedPayload.__v = 0;
 			storage.push(decoratedPayload);
+
+			console.log(storage);
 
 			return payload._id;
 		} catch (e) {

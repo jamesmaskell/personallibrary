@@ -1,34 +1,50 @@
 function BookService(repository) {
-  this.createBook = async function (payload) {
-    if (payload.title == undefined) return "missing required field title";
+	this.createBook = async function (payload) {
+		if (payload.title == undefined) return "missing required field title";
 
-    let _id = await repository.createBook(payload);
-    if (_id) {
-      payload._id = _id;
-      return payload;
-    }
-    return "cannot create book";
-  };
+		let _id = await repository.createBook(payload);
+		if (_id) {
+			payload._id = _id;
+			return payload;
+		}
+		return "cannot create book";
+	};
 
-  this.addComment = function (payload) {};
+	this.addComment = async function (payload) {
+		if (!payload.hasOwnProperty("comment") || payload.comment == undefined || payload.comment == null || payload.comment == "") {
+			return "missing required field comment";
+		}
+		let db_response = await repository.addComment(payload);
 
-  this.updateBook = async function () {};
+		if (db_response == undefined) return "no book exists";
 
-  this.getBooks = async function (bookId) {
-    let books;
+		return db_response;
+	};
 
-    if (bookId == undefined) {
-      books = await repository.getBooks();
-    } else {
-      books = await repository.getBooks(bookId);
-    }
+	this.getBooks = async function (bookId) {
+		let books;
 
-    if (books == undefined || books == null || books.length <= 0) return "no book exists";
+		if (bookId == undefined) {
+			books = await repository.getBooks();
+		} else {
+			books = await repository.getBooks(bookId);
+		}
 
-    return books;
-  };
+		if (books == undefined || books == null || books.length <= 0) return "no book exists";
 
-  this.deleteBook = async function () {};
+		return books;
+	};
+
+	this.delete = async function (bookId) {
+		if (bookId == undefined) {
+			let success = await repository.delete();
+			//could be "'complete delete successful"
+			return success ? "complete delete successful" : "";
+		} else {
+			let success = await repository.delete(bookId);
+			return success ? "delete successful" : "no book exists";
+		}
+	};
 }
 
 module.exports = BookService;
